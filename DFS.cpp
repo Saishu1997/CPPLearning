@@ -1,3 +1,18 @@
+/*
+
+Depth-First Search (DFS) is a graph traversal algorithm that explores as far as possible along one branch before backtracking. 
+It uses a stack (either explicitly or through recursion) to track nodes.
+
+DFS is useful for:
+
+Pathfinding in mazes
+Cycle detection in graphs
+Topological sorting
+Connected components detection
+Unlike BFS, DFS does not guarantee the shortest path but is efficient for exploring deep structures like trees and backtracking problems.
+
+*/
+
 #include <iostream>
 #include <vector>
 using namespace std;
