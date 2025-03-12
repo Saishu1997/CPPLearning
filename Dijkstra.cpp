@@ -1,3 +1,17 @@
+/*
+
+Dijkstra’s Algorithm is a shortest path algorithm used to find the minimum cost path from a single source node to all other 
+nodes in a weighted graph with non-negative edge weights.
+
+It works by:
+
+Assigning an initial distance of 0 to the source node and infinity to all others.
+Visiting the node with the smallest known distance and updating the distances of its neighbors.
+Repeating this process until all nodes have been visited or the shortest path to the destination is found.
+Dijkstra guarantees the shortest path in graphs with non-negative weights and is widely used in network routing and mapping systems.
+
+*/
+
 #include <iostream>
 #include <vector>
 #include <queue>
