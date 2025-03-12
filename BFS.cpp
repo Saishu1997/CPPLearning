@@ -1,4 +1,15 @@
-// Breadth-First Search (BFS) → Uses a queue (FIFO)
+/* Breadth-First Search (BFS) → Uses a queue (FIFO)
+Breadth-First Search (BFS) is a graph traversal algorithm that explores all nodes at the current depth level before moving to the next level. 
+It uses a queue to visit nodes in a level-wise manner, ensuring the shortest path in an unweighted graph.
+
+BFS is commonly used for:
+
+Shortest path finding in unweighted graphs
+Network broadcasting
+Solving puzzles like mazes
+Web crawling
+It guarantees reaching the shortest path in terms of the number of edges but does not consider weighted distances like A*.
+*/
 
 #include <iostream>
 #include <vector>
