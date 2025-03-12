@@ -1,5 +1,6 @@
 /*
-    The A (A-Star) Algorithm* is a pathfinding and graph traversal algorithm used to find the shortest path between nodes. It combines the advantages of Dijkstra’s Algorithm (guaranteeing the shortest path) and Greedy Best-First Search (using heuristics for efficiency).
+    The A (A-Star) Algorithm* is a pathfinding and graph traversal algorithm used to find the shortest path between nodes. 
+    It combines the advantages of Dijkstra’s Algorithm (guaranteeing the shortest path) and Greedy Best-First Search (using heuristics for efficiency).
 
 A* evaluates paths using the function:
 f(n) = g(n) + h(n)
