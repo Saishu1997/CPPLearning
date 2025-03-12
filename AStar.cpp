@@ -9,7 +9,7 @@ g(n) = Cost from the start node to the current node
 h(n) = Heuristic estimate of the cost from the current node to the goal
 By balancing actual cost and estimated cost, A* finds an optimal path efficiently.
 
-*/
+*\
 
 #include <iostream>
 #include <vector>
