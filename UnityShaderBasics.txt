@@ -1,0 +1,69 @@
+Unity Shader Basics
+
+
+Q6: What are the types of shaders in Unity?
+A:
+Vertex-Fragment Shader: Standard shader with vertex and pixel processing.
+Surface Shader: Built-in lighting shader for the Built-in Render Pipeline.
+Unlit Shader: Simple shader without lighting.
+Image Effect Shader: Used for post-processing effects.
+Compute Shader: Runs general-purpose computations on the GPU.
+Ray Tracing Shader: Used for real-time ray tracing in HDRP.
+
+Q7: What are the stages of the Unity rendering pipeline?
+A:
+Application Stage (CPU) – Handles game logic and object transformations.
+Geometry Processing (GPU) – Processes vertex transformations and culling.
+Rasterization (GPU) – Converts geometry into pixel fragments.
+Pixel Processing (GPU) – Computes lighting and color for each pixel.
+
+Q8: What are some Unity Render Pipelines?
+A:
+Built-in Render Pipeline: Default, flexible but less optimized.
+Universal Render Pipeline (URP): Optimized for mobile and mid-range platforms.
+High Definition Render Pipeline (HDRP): Used for high-end graphics with real-time Ray Tracing.
+
+Q9: What is a Vertex-Fragment Shader?
+A: A shader that consists of:
+
+Vertex Shader: Processes vertex positions and transformations.
+Fragment Shader: Computes final pixel colors.
+Example of a simple Unity Vertex-Fragment Shader:
+
+Shader "Custom/BasicShader"
+{
+    Properties
+    {
+        _Color ("Color", Color) = (1,1,1,1)
+    }
+    SubShader
+    {
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            struct v2f
+            {
+                float4 vertex : SV_POSITION;
+            };
+            v2f vert(float4 v : POSITION)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v);
+                return o;
+            }
+            fixed4 frag(v2f i) : SV_Target
+            {
+                return fixed4(1,0,0,1); // Red Color
+            }
+            ENDCG
+        }
+    }
+}
+
+Q10: How do shaders handle texture mapping?
+A:
+
+Shaders use UV coordinates to map 2D textures onto 3D objects.
+The tex2D(sampler2D, uv) function retrieves the texture color at a given UV coordinate.

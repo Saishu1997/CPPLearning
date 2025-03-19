@@ -1,0 +1,145 @@
+1. Unity Shader Basics
+
+Q1: What is a shader in Unity, and why is it important?
+A: A shader is a small program executed by the GPU to determine the final appearance of pixels and vertices on the screen. It enables custom rendering effects, lighting calculations, and real-time graphics optimizations.
+
+Q2: What are the different types of shaders in Unity?
+A: Vertex-Fragment Shader – Standard shader using vertex and fragment processing.
+Surface Shader – Provides built-in lighting calculations (only for Built-in RP).
+Unlit Shader – No lighting, used for basic textures.
+Image Effect Shader – Used for post-processing effects.
+Compute Shader – Executes general-purpose computations on the GPU.
+Ray Tracing Shader – Used for real-time ray tracing in HDRP.
+
+Q3: What are the main stages of the Unity rendering pipeline?
+A: Application Stage – Scene processing (handled by CPU).
+Geometry Processing Stage – Transforms object vertices (GPU).
+Rasterization Stage – Converts objects into fragments (GPU).
+Pixel Processing Stage – Determines final pixel colors (GPU).
+
+
+2. Vertex-Fragment Shader
+
+Q4: What is the difference between a Vertex Shader and a Fragment Shader?
+A: Vertex Shader: Processes each vertex’s position, transforming it from object space to clip space.
+Fragment Shader: Determines the final color of each pixel on the screen.
+
+Q5: How does a basic Unity Vertex-Fragment shader work?
+A:
+
+Shader "Custom/BasicShader"
+{
+    Properties
+    {
+        _MainTex ("Texture", 2D) = "white" {}
+    }
+    SubShader
+    {
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct v2f
+            {
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
+            };
+
+            sampler2D _MainTex;
+
+            v2f vert (appdata v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
+                return o;
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                return tex2D(_MainTex, i.uv);
+            }
+            ENDCG
+        }
+    }
+}
+This shader applies a texture to an object.
+
+Q6: What is UnityObjectToClipPos() and why is it important?
+A: It transforms object-space coordinates into clip-space for rendering. Without it, objects wouldn’t appear correctly on the screen.
+
+Q7: What are the common optimizations for a Vertex-Fragment Shader?
+A: Minimize branching (if statements) in Fragment Shaders.
+Use vertex interpolation instead of per-pixel calculations when possible.
+Reduce draw calls using instancing or batching.
+
+3. Compute Shaders (GPGPU Programming)
+
+Q8: What is a Compute Shader, and how does it differ from a Vertex-Fragment shader?
+A: A Compute Shader is used for general-purpose GPU computations (e.g., physics simulations, AI processing) and operates outside the rendering pipeline. Unlike Vertex-Fragment shaders, it processes arbitrary data, not just pixels.
+
+Q9: How do you define a Compute Shader in Unity?
+A:
+
+#pragma kernel CSMain
+
+RWTexture2D<float4> Result;
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    Result[id.xy] = float4(1, 0, 0, 1); // Output red color
+}
+
+
+Q10: What are numthreads() and SV_DispatchThreadID in Compute Shaders?
+A: numthreads(x, y, z) defines the number of threads per workgroup.
+SV_DispatchThreadID gives the global index of the current thread in the entire compute dispatch.
+
+
+Q11: When should you use a Compute Shader instead of a Fragment Shader?
+A: When performing non-graphics computations like physics, AI, or procedural generation.
+When offloading expensive CPU tasks to the GPU for parallel execution.
+When working with large amounts of data (e.g., simulations, image processing).
+
+4. Ray Tracing in Unity HDRP
+
+Q12: How does Ray Tracing differ from Rasterization?
+A: Rasterization: Converts 3D objects into 2D pixels using the rasterization pipeline.
+Ray Tracing: Simulates how light rays interact with objects for realistic shadows, reflections, and global illumination.
+
+Q13: What are the key components of a Ray Tracing Shader in Unity?
+A: Ray Generation Shader: Launches rays.
+Closest Hit Shader: Determines how rays interact with objects.
+Miss Shader: Defines behavior for rays that don’t hit anything.
+
+Q14: How do you enable Ray Tracing in Unity HDRP?
+A: Enable DXR (DirectX Raytracing) in Project Settings.
+Use HDRP Asset with Ray Tracing enabled.
+Assign Ray Tracing Materials to objects.
+
+5. Shader Graph & Optimization Techniques
+
+Q15: What is Shader Graph, and how does it simplify shader development?
+A: Shader Graph is a node-based tool for creating shaders visually without writing code. It makes shader development more accessible while still allowing custom HLSL functions.
+
+Q16: What are some common Shader Optimization Techniques?
+A: Minimize Texture Lookups: Reduce the number of tex2D() calls.
+Use Lower Precision: Prefer half over float for mobile GPUs.
+Reduce Overdraw: Avoid unnecessary blending and alpha testing.
+Optimize Light Calculations: Use baked lighting when possible.
+
+
+Q17: How does Unity handle Shader Compilation across different platforms?
+A: Unity compiles HLSL into different shading languages (GLSL, Metal, SPIR-V).
+#pragma only_renderers allows targeting specific platforms.
+Shader Variants allow fallback shaders when certain features are unsupported.

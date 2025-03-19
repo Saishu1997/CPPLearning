@@ -1,0 +1,91 @@
+1. Basic Graphics Concepts
+
+Q1: What is a point cloud?
+A: A point cloud is a collection of data points in a 3D coordinate system, 
+typically used to represent surfaces in computer graphics. It is commonly used in 3D scanning, LiDAR, and procedural terrain generation.
+
+Q2: What is the difference between a pixel and a texel?
+A:
+
+Pixel (Picture Element): The smallest unit of a digital image or display.
+Texel (Texture Element): The smallest unit of a texture image, which maps to a surface in a 3D object.
+
+
+Q3: What are the different coordinate spaces in computer graphics?
+A:
+
+Object Space: Coordinates relative to the model’s local origin.
+World Space: Coordinates relative to the global origin of the scene.
+View Space (Camera Space): Coordinates relative to the camera.
+Clip Space: Intermediate space before rasterization, where vertices are transformed by the projection matrix.
+Screen Space: 2D space where final rendering takes place.
+
+
+Q4: What is the difference between Rasterization and Ray Tracing?
+A:
+
+Rasterization: Converts 3D objects into 2D images by projecting triangles onto a screen. It is fast but limited in realism (shadows, reflections require tricks like shadow maps and screen-space reflections).
+Ray Tracing: Simulates the physical behavior of light by casting rays from the camera and tracking their interactions with surfaces. It is more realistic but computationally expensive.
+
+
+Q5: What is a Shader, and why is it important in graphics programming?
+A: A shader is a program that runs on the GPU and determines how objects appear on the screen by processing vertices and fragments. It enables real-time rendering effects like lighting, shadows, and reflections.
+
+Compute Shaders (GPGPU Programming)
+Q11: What is a Compute Shader?
+A: A Compute Shader is a program that runs on the GPU for non-graphics tasks such as physics simulation, AI processing, and procedural content generation.
+
+Q12: How do Compute Shaders differ from Fragment Shaders?
+A:
+
+Fragment Shaders: Work within the rasterization pipeline, processing pixels.
+Compute Shaders: Work outside the pipeline, handling arbitrary parallel computations.
+Example of a Compute Shader in Unity:
+
+#pragma kernel CSMain
+RWTexture2D<float4> Result;
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    Result[id.xy] = float4(0, 1, 0, 1); // Green Color
+}
+Q13: What are numthreads() and SV_DispatchThreadID in Compute Shaders?
+A:
+
+numthreads(x, y, z): Defines the number of threads per workgroup.
+SV_DispatchThreadID: Gives the global index of the current thread.
+4. Ray Tracing in Unity HDRP
+Q14: How does Ray Tracing work?
+A: Ray Tracing simulates light by casting rays from the camera into the scene, computing reflections, refractions, and shadows using intersection tests with objects.
+
+Q15: What are the main components of a Ray Tracing Shader?
+A:
+
+Ray Generation Shader: Launches rays into the scene.
+Closest Hit Shader: Determines shading when a ray hits an object.
+Miss Shader: Defines behavior when a ray misses all objects.
+Q16: How do you enable Ray Tracing in Unity?
+A:
+
+Enable DXR (DirectX Raytracing) in Project Settings.
+Use HDRP Asset with Ray Tracing enabled.
+Assign Ray Tracing Materials to objects.
+5. Shader Graph & Optimization Techniques
+Q17: What is Shader Graph, and why is it useful?
+A: Shader Graph is a visual tool in Unity for creating shaders without writing code. It allows artists and developers to build shaders using nodes instead of HLSL.
+
+Q18: How do you optimize shaders for performance?
+A:
+
+Reduce texture lookups (tex2D() calls).
+Use half instead of float for mobile optimization.
+Minimize branching (if statements) in fragment shaders.
+Use LOD (Level of Detail) to reduce GPU load.
+Use batching and instancing to minimize draw calls.
+Q19: How does Unity handle shader compilation for different platforms?
+A:
+
+Unity compiles HLSL into platform-specific shading languages (GLSL, Metal, SPIR-V).
+#pragma only_renderers allows targeting specific platforms.
+Shader Variants enable fallback options when features are unsupported.
+
